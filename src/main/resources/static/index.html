@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Datos de Tráfico</title>
+</head>
+<body>
+<h1>Enviar Datos de Tráfico</h1>
+<form id="trafficForm">
+    <label for="location">Ubicación:</label>
+    <input type="text" id="location" name="location" required><br><br>
+
+    <label for="trafficFlow">Flujo de Tráfico:</label>
+    <input type="number" id="trafficFlow" name="trafficFlow" required><br><br>
+
+    <input type="submit" value="Enviar">
+</form>
+
+<script>
+    document.getElementById('trafficForm').addEventListener('submit', function(event) {
+        event.preventDefault();  // Evitar que el formulario se envíe de forma tradicional
+
+        const location = document.getElementById('location').value;
+        const trafficFlow = document.getElementById('trafficFlow').value;
+
+        // Crear el cuerpo de la solicitud en formato JSON
+        const data = {
+            location: location,
+            trafficFlow: trafficFlow
+        };
+
+        // Enviar la solicitud POST utilizando Fetch API con el tipo de contenido JSON
+        fetch('http://localhost:8080/api/traffic', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'  // Asegúrate de que el tipo de contenido sea JSON
+            },
+            body: JSON.stringify(data)  // Convertir el objeto en JSON
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert('Datos enviados correctamente');
+                console.log(data);
+            })
+            .catch((error) => {
+                alert('Error al enviar los datos');
+                console.error('Error:', error);
+            });
+    });
+</script>
+</body>
+</html>
